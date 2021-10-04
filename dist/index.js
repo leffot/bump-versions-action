@@ -7591,6 +7591,7 @@ const bumpVersions = async () => {
         // Print a blank line
         core.info('')
 
+        // Pull latest changes from Git
         core.startGroup('📚 Checkout code')
         const git = simpleGit()
         await git.init().pull('origin', 'HEAD:master')
@@ -7649,20 +7650,28 @@ const bumpVersions = async () => {
         core.info('✒️ Wrote CHANGELOG.md')
         core.endGroup()
 
-        // Create release commit
+        // Initialize Git
         core.startGroup('🪙 Commit changes')
         await git
             .addConfig('user.email', 'action@github.com')
             .addConfig('user.name', 'GitHub Action')
         core.info('🔬 Git configured')
 
-        await git.raw(['tag', '-d', version])
+        // Delete local and remote tags
+        await git
+            .raw(['tag', '-d', version])
+            .push(['origin', '--delete', version])
         core.info('❌ Temp tag deleted')
 
-        await git.add('.').commit(`Releasing ${version}`).addTag(version)
+        // Commit changes
+        await git
+            .add('.')
+            .commit(`Releasing ${version}`)
+            .addAnnotatedTag(version, version)
         core.info('🏷 Changes committed and tagged')
 
-        await git.push('origin', 'HEAD:master')
+        // Push changes
+        await git.push('origin', 'HEAD:master').pushTags('origin')
         core.info('📕 Changes pushed to HEAD:master')
         core.endGroup()
     } catch (error) {

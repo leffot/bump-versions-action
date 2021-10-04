@@ -1,0 +1,17 @@
+name: 'Bump Versions'
+description: 'Bump the package version and add a changelog'
+inputs:
+    version:
+        description: 'Tag from the version'
+        required: true
+        default: ''
+    changelog:
+        description: 'Data for the changelog'
+        required: true
+        default: ''
+outputs:
+    changelog:
+        description: 'Cleaned version of the changelog'
+runs:
+    using: 'node12'
+    main: 'dist/index.js'

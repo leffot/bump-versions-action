@@ -1,0 +1,1 @@
+A small GitHub Action to bump the version number in several files and update the changelog with the most recent commits.

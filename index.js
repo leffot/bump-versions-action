@@ -19,8 +19,14 @@ const bumpVersions = async () => {
         // Print a blank line
         core.info('')
 
+        core.startGroup('📚 Checkout code')
+        const git = simpleGit()
+        await git.init().pull('origin', 'HEAD:master')
+        core.info('📿 Latest changes pulled')
+        core.endGroup()
+
         // Read files
-        core.info('📘 Read files from filesystem')
+        core.info('🔎 Read files from filesystem')
         const package = fs.readFileSync(PACKAGE_FILE, 'utf-8')
         const config = fs.readFileSync(CONFIG_FILE, 'utf-8')
         const changelogFile = fs.readFileSync(CHANGELOG_FILE, 'utf-8')
@@ -73,10 +79,6 @@ const bumpVersions = async () => {
 
         // Create release commit
         core.startGroup('🪙 Commit changes')
-        const git = simpleGit()
-        await git.init().pull('origin', 'HEAD:master')
-        core.info('📿 Latest changes pulled')
-
         await git
             .addConfig('user.email', 'action@github.com')
             .addConfig('user.name', 'GitHub Action')

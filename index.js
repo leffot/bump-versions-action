@@ -74,8 +74,10 @@ const bumpVersions = async () => {
         // Create release commit
         core.startGroup('🪙 Commit changes')
         const git = simpleGit()
+        await git.init().pull()
+        core.info('📿 Latest changes pulled')
+
         await git
-            .init()
             .addConfig('user.email', 'action@github.com')
             .addConfig('user.name', 'GitHub Action')
         core.info('🔬 Git configured')

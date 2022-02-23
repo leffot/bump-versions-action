@@ -7594,7 +7594,7 @@ const bumpVersions = async () => {
         // Pull latest changes from Git
         core.startGroup('📚 Checkout code')
         const git = simpleGit()
-        await git.init().pull('origin', 'HEAD:master')
+        await git.init().pull('origin', 'HEAD:main')
         core.info('📿 Latest changes pulled')
         core.endGroup()
 
@@ -7671,8 +7671,8 @@ const bumpVersions = async () => {
         core.info('🏷 Changes committed and tagged')
 
         // Push changes
-        await git.push('origin', 'HEAD:master').pushTags('origin')
-        core.info('📕 Changes pushed to HEAD:master')
+        await git.push('origin', 'HEAD:main').pushTags('origin')
+        core.info('📕 Changes pushed to HEAD:main')
         core.endGroup()
     } catch (error) {
         core.setFailed(error.message)
